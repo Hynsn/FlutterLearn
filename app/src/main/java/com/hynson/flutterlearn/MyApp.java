@@ -20,8 +20,8 @@ public class MyApp extends Application {
         super.onCreate();
 
         engine = new FlutterEngine(this);
-        // Start executing Dart code to pre-warm the FlutterEngine.
-        //engine.getDartExecutor().executeDartEntrypoint(DartExecutor.DartEntrypoint.createDefault());
+        // 预热Flutter引擎
+//        engine.getDartExecutor().executeDartEntrypoint(DartExecutor.DartEntrypoint.createDefault());
         engine.getDartExecutor().executeDartEntrypoint(new DartExecutor.DartEntrypoint(findAppBundlePath(), "main"));
         engine.addEngineLifecycleListener(new FlutterEngine.EngineLifecycleListener() {
             @Override
@@ -34,8 +34,6 @@ public class MyApp extends Application {
                 Log.i(TAG, "onEngineWillDestroy: ");
             }
         });
-
-        // Cache the FlutterEngine to be used by FlutterActivity.
         FlutterEngineCache.getInstance()
                 .put("my_engine_id", engine);
     }
