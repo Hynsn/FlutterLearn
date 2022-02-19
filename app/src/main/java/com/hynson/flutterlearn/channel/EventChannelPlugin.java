@@ -1,4 +1,4 @@
-package com.hynson.flutterlearn;
+package com.hynson.flutterlearn.channel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,13 +18,13 @@ import io.flutter.plugin.common.EventChannel;
 public class EventChannelPlugin implements EventChannel.StreamHandler {
     static List<EventChannel.EventSink> eventSinks = new ArrayList<>();
 
-    static EventChannelPlugin registerWith(FlutterEngine engine) {
+    public static EventChannelPlugin registerWith(FlutterEngine engine) {
         EventChannelPlugin plugin = new EventChannelPlugin();
         new EventChannel(engine.getDartExecutor().getBinaryMessenger(), "samples.flutter.io/event").setStreamHandler(plugin);
         return plugin;
     }
 
-    static void sendEvent(Object params) {
+    public static void sendEvent(Object params) {
         for (EventChannel.EventSink eventSink : eventSinks) {
             eventSink.success(params);
         }

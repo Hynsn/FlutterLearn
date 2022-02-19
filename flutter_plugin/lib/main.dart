@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -50,10 +51,16 @@ class _MyHomePageState extends State<MyHomePage> {
   static const EventChannel eventChannel =
       EventChannel('samples.flutter.io/event');
 
+  static const BasicMessageChannel _basicMessageChannel =
+      BasicMessageChannel('BasicMessageChannelPlugin', StringCodec());
+
   // Get battery level.
   String _batteryLevel = '--';
+
   // eventChannel
   String _receive_data = "";
+
+  String showMessage = "";
 
   Future<Null> _getBatteryLevel() async {
     String batteryLevel;
@@ -70,11 +77,30 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  Future<Void> _sendMessage2Native(String value) async {
+    String response;
+    try {
+      response = await _basicMessageChannel.send(value);
+    } on PlatformException catch (e) {
+      print(e);
+    }
+    print("");
+  }
+
   @override
   void initState() {
     super.initState();
+
+    // 时间通道注册
     eventChannel.receiveBroadcastStream(['arg1', 'arg2']).listen(_onEvent,
         onError: _onError);
+    //使用BasicMessageChannel接受来自Native的消息，并向Native回复
+    _basicMessageChannel.setMessageHandler((message) => Future<String>(() {
+          setState(() {
+            showMessage = message;
+          });
+          return "";
+        }));
   }
 
   void _onEvent(Object event) {
@@ -104,7 +130,7 @@ class _MyHomePageState extends State<MyHomePage> {
               style: Theme.of(context).textTheme.bodyLarge,
             ),
             Text(
-              'You have pushed the button this many times:',
+              'basemessage channel: $showMessage',
               style: Theme.of(context).textTheme.headline6,
             ),
             Text(
@@ -146,7 +172,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     else
                       return Colors.lightBlue;
                   })),
-                  onPressed: _getBatteryLevel,
+                  onPressed: () {
+                    _sendMessage2Native('dart消息');
+                  },
                 ),
               ],
             ),

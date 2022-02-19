@@ -3,24 +3,24 @@ package com.hynson.flutterlearn;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
+import com.hynson.flutterlearn.channel.BasicMessageChannelPlugin;
 import com.hynson.flutterlearn.channel.ChannelActivity;
+import com.hynson.flutterlearn.channel.EventChannelPlugin;
 
 import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.embedding.android.FlutterFragment;
-import io.flutter.plugin.common.BinaryMessenger;
-import io.flutter.plugin.common.EventChannel;
+import io.flutter.plugin.common.BasicMessageChannel;
 
 public class MainActivity extends FragmentActivity {
 
     private static final String TAG_FLUTTER_FRAGMENT = "flutter_fragment";
     private FlutterFragment flutterFragment;
-    private static final String EVENT_CHANNEL = "samples.flutter.io/event";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,12 +38,11 @@ public class MainActivity extends FragmentActivity {
         findViewById(R.id.btn_channel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*// 相当于启动一个新Flutter引擎，跳转加载较慢
+                // 相当于启动一个新Flutter引擎，跳转加载较慢
                 Intent intent = new Intent();
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent.setComponent(new ComponentName(getBaseContext(), ChannelActivity.class)));*/
+                startActivity(intent.setComponent(new ComponentName(getBaseContext(), ChannelActivity.class)));
 
-                EventChannelPlugin.sendEvent(Utils.INSTANCE.getBatteryLevel(getApplicationContext()));
             }
         });
         findViewById(R.id.btn_fragment).setOnClickListener(new View.OnClickListener() {
@@ -56,6 +55,23 @@ public class MainActivity extends FragmentActivity {
             }
         });
 
+        findViewById(R.id.btn_event).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EventChannelPlugin.sendEvent(Utils.INSTANCE.getBatteryLevel(getApplicationContext()));
+            }
+        });
+        findViewById(R.id.btn_basemessage).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                BasicMessageChannelPlugin.send(Utils.INSTANCE.getBatteryLevel(getApplicationContext())+"", new BasicMessageChannel.Reply<String>() {
+                    @Override
+                    public void reply(@Nullable @org.jetbrains.annotations.Nullable String reply) {
+
+                    }
+                });
+            }
+        });
     }
 
     private void initFragment() {

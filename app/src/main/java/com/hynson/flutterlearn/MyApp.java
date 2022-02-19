@@ -2,12 +2,10 @@ package com.hynson.flutterlearn;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.ContextWrapper;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.BatteryManager;
-import android.os.Build;
 import android.util.Log;
+
+import com.hynson.flutterlearn.channel.BasicMessageChannelPlugin;
+import com.hynson.flutterlearn.channel.EventChannelPlugin;
 
 import io.flutter.embedding.engine.FlutterEngine;
 import io.flutter.embedding.engine.FlutterEngineCache;
@@ -67,6 +65,8 @@ public class MyApp extends Application {
                 });
 
         EventChannelPlugin.registerWith(engine);
+
+        BasicMessageChannelPlugin.registerWith(engine);
 
     }
 

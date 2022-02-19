@@ -14,20 +14,56 @@
         android:layout_height="0dp"
         android:layout_weight="1" />
 
-    <Button
-        android:id="@+id/btn_activity"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="jump Activity" />
+        android:gravity="center"
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/btn_fragment"
-        android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/btn_activity"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Activity" />
+
+        <Button
+            android:id="@+id/btn_fragment"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:text="Fragment" />
+
+        <Button
+            android:id="@+id/btn_channel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:text="Channel" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="jump Fragment" />
-    <Button
-        android:id="@+id/btn_channel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="jump Channel" />
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_basemessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:text="Send BaseMsg"
+            android:textAllCaps="false"/>
+        <Button
+            android:id="@+id/btn_event"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Send Event"
+            android:textAllCaps="false"/>
+
+    </LinearLayout>
+
 </LinearLayout>
