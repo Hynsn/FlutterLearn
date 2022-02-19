@@ -6,12 +6,7 @@ import android.content.IntentFilter
 import android.os.BatteryManager
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import com.hynson.flutterlearn.MainActivity
-import com.hynson.flutterlearn.R
 import io.flutter.embedding.android.FlutterActivity
-import io.flutter.embedding.android.FlutterFragment
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -19,29 +14,8 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 
 
 class ChannelActivity : FlutterActivity() {
-    private var flutterFragment: FlutterFragment? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-//        setContentView(R.layout.activity_channel)
-
-        initFragment()
-
-    }
-
-    private fun initFragment() {
-//        flutterFragment = fragmentManager
-//            .findFragmentByTag(TAG_FLUTTER_FRAGMENT) as FlutterFragment?
-//        if (flutterFragment == null) {
-//            flutterFragment = FlutterFragment.withCachedEngine("my_engine_id").build<FlutterFragment>()
-//        }
-//        fragmentManager.beginTransaction()
-//            .replace(R.id.fl_contain, flutterFragment, TAG_FLUTTER_FRAGMENT)
-//            .commit()
-    }
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
-//        super.configureFlutterEngine(flutterEngine)
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).setMethodCallHandler(
             object : MethodCallHandler {
                 override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
@@ -74,6 +48,5 @@ class ChannelActivity : FlutterActivity() {
 
     companion object {
         const val CHANNEL = "samples.flutter.io/battery"
-        const val TAG_FLUTTER_FRAGMENT = "flutter_fragment";
     }
 }

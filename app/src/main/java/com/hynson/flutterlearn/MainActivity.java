@@ -1,33 +1,26 @@
 package com.hynson.flutterlearn;
 
 import android.content.ComponentName;
-import android.content.ContextWrapper;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.BatteryManager;
-import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
 import com.hynson.flutterlearn.channel.ChannelActivity;
 
-import org.jetbrains.annotations.NotNull;
-
 import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.embedding.android.FlutterFragment;
-import io.flutter.plugin.common.MethodCall;
-import io.flutter.plugin.common.MethodChannel;
+import io.flutter.plugin.common.BinaryMessenger;
+import io.flutter.plugin.common.EventChannel;
 
 public class MainActivity extends FragmentActivity {
 
     private static final String TAG_FLUTTER_FRAGMENT = "flutter_fragment";
     private FlutterFragment flutterFragment;
-
-    private static final String CHANNEL = "samples.flutter.io/battery";
+    private static final String EVENT_CHANNEL = "samples.flutter.io/event";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +38,12 @@ public class MainActivity extends FragmentActivity {
         findViewById(R.id.btn_channel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                /*// 相当于启动一个新Flutter引擎，跳转加载较慢
                 Intent intent = new Intent();
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent.setComponent(new ComponentName(getBaseContext(), ChannelActivity.class)));
+                startActivity(intent.setComponent(new ComponentName(getBaseContext(), ChannelActivity.class)));*/
+
+                EventChannelPlugin.sendEvent(Utils.INSTANCE.getBatteryLevel(getApplicationContext()));
             }
         });
         findViewById(R.id.btn_fragment).setOnClickListener(new View.OnClickListener() {
@@ -55,43 +51,11 @@ public class MainActivity extends FragmentActivity {
             public void onClick(View view) {
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 fragmentManager.beginTransaction()
-                        .add(R.id.fl_contain, flutterFragment, TAG_FLUTTER_FRAGMENT)
+                        .replace(R.id.fl_contain, flutterFragment, TAG_FLUTTER_FRAGMENT)
                         .commit();
             }
         });
 
-        /*new MethodChannel(getFl, CHANNEL).setMethodCallHandler(
-                new MethodChannel.MethodCallHandler() {
-                    @Override
-                    public void onMethodCall(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
-                        if (call.method.equals("getBatteryLevel")) {
-                            int batteryLevel = getBatteryLevel();
-
-                            if (batteryLevel != -1) {
-                                result.success(batteryLevel);
-                            } else {
-                                result.error("UNAVAILABLE", "Battery level not available.", null);
-                            }
-                        } else {
-                            result.notImplemented();
-                        }
-                    }
-
-                    private int getBatteryLevel() {
-                        int batteryLevel = -1;
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            BatteryManager batteryManager = (BatteryManager) getSystemService(BATTERY_SERVICE);
-                            batteryLevel = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY);
-                        } else {
-                            Intent intent = new ContextWrapper(getApplicationContext()).
-                                    registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
-                            batteryLevel = (intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1) * 100) /
-                                    intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
-                        }
-
-                        return batteryLevel;
-                    }
-                });*/
     }
 
     private void initFragment() {
