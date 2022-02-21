@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
-import com.hynson.flutterlearn.channel.BasicMessageChannelPlugin;
+import com.hynson.flutterlearn.channel.MessageChannelPlugin;
 import com.hynson.flutterlearn.channel.ChannelActivity;
 import com.hynson.flutterlearn.channel.EventChannelPlugin;
 
@@ -64,7 +64,7 @@ public class MainActivity extends FragmentActivity {
         findViewById(R.id.btn_basemessage).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BasicMessageChannelPlugin.send(Utils.INSTANCE.getBatteryLevel(getApplicationContext())+"", new BasicMessageChannel.Reply<String>() {
+                MessageChannelPlugin.send(Utils.INSTANCE.getBatteryLevel(getApplicationContext())+"", new BasicMessageChannel.Reply<String>() {
                     @Override
                     public void reply(@Nullable @org.jetbrains.annotations.Nullable String reply) {
 

@@ -1,8 +1,5 @@
 package com.hynson.flutterlearn.channel;
 
-import android.app.Activity;
-import android.widget.Toast;
-
 import io.flutter.embedding.engine.FlutterEngine;
 import io.flutter.plugin.common.BasicMessageChannel;
 import io.flutter.plugin.common.StringCodec;
@@ -15,15 +12,15 @@ import io.flutter.plugin.common.StringCodec;
  * <author>  <time>     <version> <desc>
  * Hynsonhou  2022/2/19   1.0       首次创建
  */
-public class BasicMessageChannelPlugin implements BasicMessageChannel.MessageHandler<String>, BasicMessageChannel.Reply<String> {
+public class MessageChannelPlugin implements BasicMessageChannel.MessageHandler<String>, BasicMessageChannel.Reply<String> {
     private static BasicMessageChannel<String> messageChannel;
 
-    public static BasicMessageChannelPlugin registerWith(FlutterEngine engine) {
-        return new BasicMessageChannelPlugin(engine);
+    public static MessageChannelPlugin registerWith(FlutterEngine engine) {
+        return new MessageChannelPlugin(engine);
     }
 
-    private BasicMessageChannelPlugin(FlutterEngine engine) {
-        this.messageChannel = new BasicMessageChannel<>(engine.getDartExecutor().getBinaryMessenger(), "BasicMessageChannelPlugin", StringCodec.INSTANCE);
+    private MessageChannelPlugin(FlutterEngine engine) {
+        messageChannel = new BasicMessageChannel<>(engine.getDartExecutor().getBinaryMessenger(), "BasicMessageChannelPlugin", StringCodec.INSTANCE);
         //设置消息处理器，处理来自Dart的消息
         messageChannel.setMessageHandler(this);
     }

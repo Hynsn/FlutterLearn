@@ -4,8 +4,9 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
-import com.hynson.flutterlearn.channel.BasicMessageChannelPlugin;
+import com.hynson.flutterlearn.channel.MessageChannelPlugin;
 import com.hynson.flutterlearn.channel.EventChannelPlugin;
+import com.hynson.flutterlearn.channel.MethodChannelPlugin;
 
 import io.flutter.embedding.engine.FlutterEngine;
 import io.flutter.embedding.engine.FlutterEngineCache;
@@ -46,27 +47,12 @@ public class MyApp extends Application {
         });
         FlutterEngineCache.getInstance()
                 .put("my_engine_id", engine);
-        new MethodChannel(engine.getDartExecutor().getBinaryMessenger(), METHOD_CHANNEL).setMethodCallHandler(
-                new MethodChannel.MethodCallHandler() {
-                    @Override
-                    public void onMethodCall(MethodCall call, MethodChannel.Result result) {
-                        if (call.method.equals("getBatteryLevel")) {
-                            int batteryLevel = Utils.INSTANCE.getBatteryLevel(getApplicationContext());
 
-                            if (batteryLevel != -1) {
-                                result.success(batteryLevel);
-                            } else {
-                                result.error("UNAVAILABLE", "Battery level not available.", null);
-                            }
-                        } else {
-                            result.notImplemented();
-                        }
-                    }
-                });
+        MethodChannelPlugin.registerWith(engine,this);
 
         EventChannelPlugin.registerWith(engine);
 
-        BasicMessageChannelPlugin.registerWith(engine);
+        MessageChannelPlugin.registerWith(engine);
 
     }
 

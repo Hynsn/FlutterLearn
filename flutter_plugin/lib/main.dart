@@ -91,7 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
 
-    // 时间通道注册
+    // 事件通道接收
     eventChannel.receiveBroadcastStream(['arg1', 'arg2']).listen(_onEvent,
         onError: _onError);
     //使用BasicMessageChannel接受来自Native的消息，并向Native回复
