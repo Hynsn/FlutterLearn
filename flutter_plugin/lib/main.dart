@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({Key? key, required this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -77,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  Future<Void> _sendMessage2Native(String value) async {
+  Future<Void?> _sendMessage2Native(String value) async {
     String response;
     try {
       response = await _basicMessageChannel.send(value);
@@ -103,7 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
         }));
   }
 
-  void _onEvent(Object event) {
+  void _onEvent(dynamic event) {
     setState(() {
       _receive_data = '$event';
     });
