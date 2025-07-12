@@ -80,11 +80,11 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<Void?> _sendMessage2Native(String value) async {
     String response;
     try {
-      response = await _basicMessageChannel.send(value);
+      print("_sendMessage2Native: $value");
+      await _basicMessageChannel.send(value);
     } on PlatformException catch (e) {
       print(e);
     }
-    print("");
   }
 
   @override

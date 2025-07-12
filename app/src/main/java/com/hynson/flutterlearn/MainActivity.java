@@ -3,6 +3,7 @@ package com.hynson.flutterlearn;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -21,6 +22,8 @@ public class MainActivity extends FragmentActivity {
 
     private static final String TAG_FLUTTER_FRAGMENT = "flutter_fragment";
     private FlutterFragment flutterFragment;
+
+    private static final String TAG = "FragmentActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +69,8 @@ public class MainActivity extends FragmentActivity {
             public void onClick(View view) {
                 MessageChannelPlugin.send(Utils.INSTANCE.getBatteryLevel(getApplicationContext())+"", new BasicMessageChannel.Reply<String>() {
                     @Override
-                    public void reply(@Nullable @org.jetbrains.annotations.Nullable String reply) {
-
+                    public void reply(@Nullable String reply) {
+                        Log.i(TAG, "MessageChannelPlugin 收到的应答: "+reply);
                     }
                 });
             }
@@ -75,12 +78,16 @@ public class MainActivity extends FragmentActivity {
     }
 
     private void initFragment() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        flutterFragment = (FlutterFragment) fragmentManager
-                .findFragmentByTag(TAG_FLUTTER_FRAGMENT);
         if (flutterFragment == null) {
             flutterFragment = FlutterFragment.withCachedEngine("my_engine_id").build();
         }
+    }
+
+    private FlutterFragment getFragment(){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        flutterFragment = (FlutterFragment) fragmentManager
+                .findFragmentByTag(TAG_FLUTTER_FRAGMENT);
+        return flutterFragment;
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.hynson.flutterlearn.channel;
 
+import android.util.Log;
+
 import io.flutter.embedding.engine.FlutterEngine;
 import io.flutter.plugin.common.BasicMessageChannel;
 import io.flutter.plugin.common.StringCodec;
@@ -13,6 +15,8 @@ import io.flutter.plugin.common.StringCodec;
  * Hynsonhou  2022/2/19   1.0       首次创建
  */
 public class MessageChannelPlugin implements BasicMessageChannel.MessageHandler<String>, BasicMessageChannel.Reply<String> {
+    private static String TAG = "MessageChannelPlugin";
+
     private static BasicMessageChannel<String> messageChannel;
 
     public static MessageChannelPlugin registerWith(FlutterEngine engine) {
@@ -28,6 +32,7 @@ public class MessageChannelPlugin implements BasicMessageChannel.MessageHandler<
     @Override
     public void onMessage(String s, BasicMessageChannel.Reply<String> reply) {//处理Dart发来的消息
         reply.reply("BasicMessageChannel收到：" + s);//可以通过reply进行回复
+        Log.i(TAG, "onMessage: "+s);
     }
 
     /**
@@ -42,6 +47,6 @@ public class MessageChannelPlugin implements BasicMessageChannel.MessageHandler<
 
     @Override
     public void reply(String s) {
-
+        Log.i(TAG, "reply: "+s);
     }
 }
