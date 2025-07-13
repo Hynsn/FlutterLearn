@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:ffi';
+import 'dart:ffi' as ffi;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -62,6 +62,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   String showMessage = "";
 
+  final GlobalKey _key = GlobalKey();
+  Size? _size;
+
   Future<Null> _getBatteryLevel() async {
     String batteryLevel;
     try {
@@ -77,7 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  Future<Void?> _sendMessage2Native(String value) async {
+  Future<ffi.Void?> _sendMessage2Native(String value) async {
     String response;
     try {
       print("_sendMessage2Native: $value");
@@ -101,6 +104,14 @@ class _MyHomePageState extends State<MyHomePage> {
           });
           return "";
         }));
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final RenderBox renderBox = _key.currentContext!.findRenderObject() as RenderBox;
+      setState(() {
+        _size = renderBox.size;
+        print('实际宽: ${_size?.width}, 高: ${_size?.height}');
+      });
+    });
   }
 
   void _onEvent(dynamic event) {
@@ -137,7 +148,17 @@ class _MyHomePageState extends State<MyHomePage> {
               'event channel: receive $_receive_data',
               style: Theme.of(context).textTheme.headline6,
             ),
+            // LayoutBuilder获取父组件宽高
+            LayoutBuilder(
+              builder: (context, constraints) {
+                double width = constraints.maxWidth;
+                double height = constraints.maxHeight;
+                print('宽: $width, 高: $height');
+                return Container();
+              }
+            ),
             Row(
+              key: _key,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 //FlatButton 和 RaisedButton 基本一致
