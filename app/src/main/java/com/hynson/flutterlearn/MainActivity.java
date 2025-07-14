@@ -51,10 +51,7 @@ public class MainActivity extends FragmentActivity {
         findViewById(R.id.btn_fragment).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction()
-                        .replace(R.id.fl_contain, flutterFragment, TAG_FLUTTER_FRAGMENT)
-                        .commit();
+
             }
         });
 
@@ -78,8 +75,14 @@ public class MainActivity extends FragmentActivity {
     }
 
     private void initFragment() {
+        flutterFragment = getFragment();
         if (flutterFragment == null) {
-            flutterFragment = FlutterFragment.withCachedEngine("my_engine_id").build();
+            flutterFragment = FlutterFragment.createDefault();
+//            flutterFragment = FlutterFragment.withCachedEngine("my_engine_id").build();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fl_contain, flutterFragment, TAG_FLUTTER_FRAGMENT)
+                    .commit();
         }
     }
 
