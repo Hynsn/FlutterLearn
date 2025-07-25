@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_plugin/FlexDemo.dart';
 
+import 'FlutterWifiIoT.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -24,7 +26,7 @@ class MyApp extends StatelessWidget {
         // counter didn't reset back to zero; the application is not restarted.
         primarySwatch: Colors.green,
       ),
-      home: FlexDemo(),
+      home: FlutterWifiIoT(),
     );
   }
 }
